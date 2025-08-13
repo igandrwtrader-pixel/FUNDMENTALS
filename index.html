@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+ <title>FUNDAMENTALS ECONOMICS Avanzado</title>
+
+
+<!-- REEMPLAZA completamente tu header anterior por ESTE BLOQUE -->
+<header id="market-header" role="banner" aria-label="Encabezado mercado - índices">
+  <!-- TICKER SUPERIOR -->
+  <div class="ticker-wrap" aria-hidden="false">
+    <div class="track">
+      <div class="group">
+        <span class="tick verde">SP500 +1.2%</span>
+        <span class="tick rojo">Dow -0.8%</span>
+        <span class="tick blanco">Nasdaq 0.0%</span>
+        <span class="tick verde">Russell +0.5%</span>
+        <span class="tick rojo">FTSE -0.3%</span>
+        <span class="tick blanco">DAX 0.0%</span>
+        <span class="tick verde">Nikkei +0.9%</span>
+        <span class="tick verde">CAC +0.7%</span>
+        <span class="tick rojo">Hang Seng -1.0%</span>
+        <span class="tick blanco">S&P/TSX 0.0%</span>
+      </div>
+      <!-- copia controlada (NO contiene títulos) -->
+      <div class="group" aria-hidden="true">
+        <span class="tick verde">SP500 +1.2%</span>
+        <span class="tick rojo">Dow -0.8%</span>
+        <span class="tick blanco">Nasdaq 0.0%</span>
+        <span class="tick verde">Russell +0.5%</span>
+        <span class="tick rojo">FTSE -0.3%</span>
+        <span class="tick blanco">DAX 0.0%</span>
+        <span class="tick verde">Nikkei +0.9%</span>
+        <span class="tick verde">CAC +0.7%</span>
+        <span class="tick rojo">Hang Seng -1.0%</span>
+        <span class="tick blanco">S&P/TSX 0.0%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ÚNICO título (solo aquí) -->
+  <h1 id="main-title">INDICES</h1>
+
+  <!-- TICKER INFERIOR -->
+  <div class="ticker-wrap" aria-hidden="false">
+    <div class="track">
+      <div class="group">
+        <span class="tick verde">BTC +3.5%</span>
+        <span class="tick rojo">ETH -1.1%</span>
+        <span class="tick blanco">Gold 0.0%</span>
+        <span class="tick verde">Oil +2.2%</span>
+        <span class="tick rojo">Silver -0.7%</span>
+        <span class="tick blanco">Copper 0.0%</span>
+        <span class="tick verde">USD +0.4%</span>
+        <span class="tick verde">EUR +0.6%</span>
+        <span class="tick rojo">JPY -0.5%</span>
+        <span class="tick blanco">GBP 0.0%</span>
+      </div>
+      <div class="group" aria-hidden="true">
+        <span class="tick verde">BTC +3.5%</span>
+        <span class="tick rojo">ETH -1.1%</span>
+        <span class="tick blanco">Gold 0.0%</span>
+        <span class="tick verde">Oil +2.2%</span>
+        <span class="tick rojo">Silver -0.7%</span>
+        <span class="tick blanco">Copper 0.0%</span>
+        <span class="tick verde">USD +0.4%</span>
+        <span class="tick verde">EUR +0.6%</span>
+        <span class="tick rojo">JPY -0.5%</span>
+        <span class="tick blanco">GBP 0.0%</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<style>
+  /* --- reset y base --- */
+  :root{ --bg:#000; --panel:rgba(6,6,8,0.98);}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);font-family: 'Segoe UI', Tahoma, Arial, sans-serif;color:#fff;}
+
+  /* --- HEADER full width --- */
+  #market-header{
+    width:100vw;
+    left:0;
+    top:0;
+    padding:16px 0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:8px;
+    background:linear-gradient(180deg,#120023,#070709);
+  }
+
+  /* --- ÚNICO TÍTULO --- */
+  #main-title{
+    margin:0;
+    padding:8px 24px;
+    font-size:clamp(26px,4.5vw,48px);
+    font-weight:800;
+    letter-spacing:2px;
+    color:#f8fafc;
+    background:var(--panel);
+    border-radius:10px;
+    z-index:2;
+    text-transform:uppercase;
+  }
+
+  /* --- WRAP del ticker (visible zone) --- */
+  .ticker-wrap{
+    width:100%;
+    overflow:hidden;
+    display:block;
+  }
+
+  /* --- TRACK: fila compuesta por dos grupos (original + copia) --- */
+  .track{
+    display:flex;
+    align-items:center;
+    /* important: make track wide enough so flex computes group widths naturally */
+    width:max-content;
+    animation: scroll 12s linear infinite;
+    gap:0;
+  }
+
+  /* grupo de items (repetido) */
+  .group{
+    display:flex;
+    gap:40px; /* espacio entre items */
+    align-items:center;
+    padding:0 24px;
+  }
+
+  /* cada tick */
+  .tick{
+    white-space:nowrap;
+    font-family: "Roboto Mono", monospace;
+    font-size:clamp(12px,1.2vw,16px);
+    display:inline-block;
+    line-height:1;
+  }
+  .tick.verde { color:#2ee6a7; text-shadow:0 0 8px rgba(46,230,167,0.06) }
+  .tick.rojo  { color:#ff6b6b; text-shadow:0 0 8px rgba(255,107,107,0.06) }
+  .tick.blanco{ color:#e6eef8; }
+
+  /* --- ANIMACIÓN: movemos el track exactamente la mitad (50%) --- 
+     El truco: track = groupA + groupB. Mover -50% hace loop perfecto
+     porque groupB comienza donde groupA terminó. */
+  @keyframes scroll{
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* performance hint */
+  .track{ will-change: transform; }
+
+  /* responsive */
+  @media (max-width:700px){
+    .group{ gap:18px; padding:0 12px; }
+    #main-title{ font-size:clamp(18px,7vw,28px); padding:6px 12px }
+  }
+</style>
+
+<!-- Pequeño script que evita duplicados accidentales en páginas grandes:
+     Si por error hay otro <h1> en el DOM, éste resalta y te avisa en consola. -->
+<script>
+  (function(){
+    // Garantizar que existe solo un h1 visible con texto "INDICES"
+    const allH1 = document.querySelectorAll('h1');
+    if(allH1.length > 1){
+      console.warn('ATENCIÓN: Hay más de un <h1> en la página. Esto puede crear duplicados visuales.');
+      // No eliminamos nada automáticamente para no romper tu DOM. 
+      // Busca y elimina el extra si aparece en tu HTML.
+    }
+    // Force the duplicated groups to have the same pixel width (avoids misalign on some browsers)
+    const tracks = document.querySelectorAll('.track');
+    tracks.forEach(track => {
+      const groups = track.querySelectorAll('.group');
+      if(groups.length >= 2){
+        // make second group identical width to first to ensure exact 50% split
+        const a = groups[0].getBoundingClientRect().width;
+        groups[1].style.minWidth = a + 'px';
+      }
+    });
+  })();
+</script>
+
+
+
+<style>
+
+
+
+
+/* ==== FONDO DIFUMINADO DE 3 COLORES ==== */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #20002f, #000a40f8, #003c39, #220015, #004843);
+    background-size: 400% 400%;
+    animation: gradientMove 6s ease infinite;
+    min-height: 100vh;
+    backdrop-filter: blur(20px);
+}
+
+/* Animación gradiente */
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+
+
+
+
+
+
+
+
+/* ==== TÍTULOS DE LOS DÍAS ==== */
+h2 {
+    color: white;
+    text-align: center;
+    margin: 20px 0 20px 0;
+    font-size: 1.3rem;
+}
+
+/* ==== ÁREA DE TEXTO ==== */
+textarea {
+    width: calc(50% - 500px);
+    height: 100px;
+    font-family: monospace;
+    display: block;
+    margin: 40px auto;
+    padding: 10px;
+    border-radius: 12px;
+    border: none;
+    outline: none;
+    background: rgba(0, 0, 0, 0.466);
+    color: rgba(255, 255, 255, 0.775);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5), inset 0 0 15px rgba(255,255,255,0.05);
+}
+
+button {
+    position: relative; /* para los pseudoelementos */
+    display: block;
+    margin: 10px auto 40px auto; /* margen inferior extra para espacio */
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: white;
+    background: linear-gradient(145deg, #3b006bcc, #1a0033cc); /* con transparencia para cristal */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    transition: all 0.3s ease;
+    overflow: visible; /* para mostrar brillos fuera */
+    backdrop-filter: blur(8px); /* efecto cristal */
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 1;
+}
+
+/* Brillo externo sutil */
+button::before {
+    content: "";
+    position: absolute;
+    top: -6px; bottom: -6px; left: -6px; right: -6px; /* pequeño margen alrededor */
+    border-radius: 12px;
+    background: radial-gradient(circle at center,
+        rgba(150, 48, 246, 0.3), /* blueviolet morado suave */
+        rgba(207, 93, 235, 0.15), /* medium orchid rosa suave */
+        transparent 70%);
+    filter: blur(6px);
+    z-index: -1; /* queda detrás del botón y otros elementos */
+}
+
+/* Brillo interno animado en degradado morado-rosa */
+button::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;    /* igual que el botón */
+    height: 100%;   /* igual que el botón */
+    background: linear-gradient(120deg,
+        rgba(186,85,211,0.4),
+        rgba(254, 128, 147, 0.3),
+        rgba(138,43,226,0.4),
+        rgba(255,182,193,0.3),
+        rgba(186,85,211,0.4));
+    background-size: 200% 200%;  /* menos tamaño para animación más contenida */
+    border-radius: 8px;
+    animation: brilloMov 2s ease infinite;
+    mix-blend-mode: screen;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Animación modificada para movimiento más contenido */
+@keyframes brilloMov {
+    0% {
+        background-position: 25% 50%;
+    }
+    50% {
+        background-position: 75% 50%;
+    }
+    100% {
+        background-position: 25% 50%;
+    }
+}
+
+
+/* Animación de movimiento del brillo interno */
+@keyframes brilloMov {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Hover se mantiene igual, pero si quieres puedo adaptar */
+button:hover {
+    background: linear-gradient(145deg, #5e00a8cc, #2a004dcc);
+    box-shadow: 0 0 15px rgba(255,255,255,0.7), 0 5px 20px rgba(0,0,0,0.6);
+    transform: scale(1.05);
+}
+
+
+/* ==== TABLAS ==== */
+table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: calc(100% - 500px); /* 250px a cada lado */
+    margin: 20px auto;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    border-radius: 15px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.522);
+    box-shadow:
+        0 8px 30px rgba(0, 0, 0, 0.334),
+        inset 0 0 15px rgba(255,255,255,0.05);
+
+    /* Animación */
+    opacity: 0;
+   
+    transform: translateY(20px);
+    animation: mostrarTabla 0.8s ease-out forwards;
+}
+
+/* Animación de aparición */
+@keyframes mostrarTabla {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Encabezado tabla */
+thead {
+    background-color: rgba(0, 0, 0, 0.798);
+    color: white;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* Celdas */
+th, td {
+    padding: 12px 15px;
+    text-align: center;
+}
+
+/* Filas */
+tbody tr {
+    background-color: rgba(0, 0, 0, 0.691);
+    color: white;
+    transition: all 0.3s ease;
+}
+tbody tr:nth-child(even) {
+    background-color: rgba(20, 20, 20, 0.588);
+}
+tbody tr:hover {
+    background-color: rgba(99, 9, 132, 0.9);
+    transform: scale(1.01);
+}
+
+/* Pie */
+tfoot {
+    background-color: rgba(57, 57, 57, 0.174);
+    font-weight: bold;
+    color: white;
+}
+
+/* Bordes redondeados */
+thead tr:first-child th:first-child { border-top-left-radius: 15px; }
+thead tr:first-child th:last-child { border-top-right-radius: 15px; }
+tfoot tr:last-child th:first-child { border-bottom-left-radius: 15px; }
+tfoot tr:last-child th:last-child { border-bottom-right-radius: 15px; }
+
+
+
+
+
+
+
+
+
+
+
+
+/* Contenedor para tabla + indicador (MODIFICADO - AJUSTADO) */
+.tabla-indicador {
+    display: flex;            /* flex para alinear tabla + barra en fila */
+    align-items: center;      /* centra verticalmente la barra respecto a la tabla */
+    gap: 10px;                /* separación de 10px entre tabla y barra */
+    justify-content: center;  /* centra la pareja (tabla + indicador) en el contenedor */
+    width: 100%;              /* ocupa todo el ancho disponible para evitar que la barra se pegue al borde */
+    box-sizing: border-box;
+}
+
+/* Aseguramos que la tabla dentro del wrapper no mantenga margin:auto (que puede empujar la barra)
+   y tenga margen vertical consistente */
+.tabla-indicador > table {
+    margin: 20px 0;          /* centrada por el contenedor flex, sin auto hacia los lados */
+}
+
+/* Indicador lateral (MODIFICADO) */
+.indicador-luz {
+    width: 20px;              /* ancho estrecho */
+    height: 50px;             /* altura fija solicitada */
+    border-radius: 10px;      /* esquinas redondeadas */
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    flex-shrink: 0;           /* evitar que la barra se encoja con la tabla */
+    display: block;
+}
+
+/* Luz interna animada (sin cambios funcionales) */
+.indicador-luz::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: 0;
+    width: 100%;
+    height: 200%;
+    background: linear-gradient(
+        transparent,
+        rgba(255,255,255,0.6),
+        transparent
+    );
+    animation: moverLuz 1.5s infinite linear;
+}
+
+@keyframes moverLuz {
+    0% { top: -50%; }
+    100% { top: 50%; }
+}
+
+/* Verde para positivo */
+.indicador-luz.positivo {
+    background: rgb(0, 128, 111);
+    box-shadow: 0 0 15px rgb(0, 255, 145), 0 0 20px rgb(0, 255, 123) inset;
+}
+
+/* Verde para positivo */
+.indicador-luz.positivovier {
+    background: rgb(0, 128, 111);
+    box-shadow: 0 0 15px rgb(0, 255, 145), 0 0 20px rgb(0, 255, 123) inset;
+}
+
+/* Rojo para negativo */
+.indicador-luz.negativo {
+    background: darkred;
+    box-shadow: 0 0 15px rgb(255, 0, 136), 0 0 30px rgb(255, 0, 98) inset;
+}
+
+/* Gris neutro */
+.indicador-luz.neutro {
+    background: gray;
+    box-shadow: 0 0 10px silver, 0 0 20px silver inset;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+</style>
+</head>
+<body>
+
+
+<textarea id="inputText" placeholder="Pega aquí los datos..."></textarea>
+<button id="run">PROCESAR</button>
+<div id="output"></div>
+
+</body>
+ <script>
+    const definitions = {
+      "Fed Chair Powell Speaks": { type: "rate", impact: "red" },
+      "Federal Funds Rate": { type: "rate", impact: "red" },
+
+                                                                                        "Richmond Manufacturing Index": { type: "none", impact: "orange" },
+     
+      "President Trump Speaks": { type: "other", impact: "grey" },
+      "Unemployment Claims": { type: "inflation de 1", impact: "orange" },
+      "Unemployment Rate": { type: "inflation", impact: "red" },
+
+      "Flash Manufacturing PMI": { type: "confidence", impact: "red" },
+      "Flash Services PMI": { type: "confidence", impact: "red" },
+
+
+                                                                                             "New Home Sales": { type: "inflation de 1", impact: "orange" },
+
+      "Pending Home Sales m/m": { type: "price", impact: "orange" },
+      //estaba tipo inflation
+
+       "Existing Home Sales": { type: "positive", impact: "orange" },
+
+      "Core Durable Goods Orders m/m": { type: "other", impact: "orange" },
+      "Durable Goods Orders m/m": { type: "other", impact: "orange" },
+
+      "Philly Fed Manufacturing Index": { type: "price", impact: "orange" },
+
+"Revised UoM Consumer Sentiment": { type: "inflation", impact: "orange" },
+      
+      "CPI m/m": { type: "inflation", impact: "red" },
+      "CPI y/y": { type: "inflation", impact: "red" },
+      "Core CPI": { type: "inflation", impact: "red" },
+      "Core CPI m/m": { type: "inflation", impact: "red" },
+
+      "Average Hourly Earnings m/m": { type: "inflation", impact: "red" },
+                          "Core PCE Price Index m/m": { type: "inflation", impact: "red" },
+//no c si pce estaba en inflation o price
+
+      "Final GDP Price Index q/q": { type: "rate", impact: "red" },
+      "Final GDP q/q": { type: "inflation", impact: "red" },
+      "Fed Funds Rate": { type: "rate", impact: "red" },
+      "Advance GDP q/q" : { type: "rate", impact: "red" },
+      "FOMC Statement": { type: "other", impact: "red" },
+      "Advance GDP Price Index q/q" : { type: "rate", impact: "red" },
+
+      "ISM Manufacturing PMI": { type: "inflation", impact: "red" },
+      "ISM Services PMI": { type: "other", impact: "red" },
+      "ISM Manufacturing Prices": { type: "inflation de 1", impact: "orange" },
+      "Final Manufacturing PMI": { type: "inflation", impact: "red" },
+      "Chicago PMI": { type: "price", impact: "orange" },
+
+
+      "Michigan Consumer Sentiment": { type: "confidence", impact: "red" },
+   
+      "Prelim UoM Consumer Sentiment": { type: "rate", impact: "red" },
+
+      "ADP Non-Farm Employment Change": { type: "inflation", impact: "red" },
+      "Non-Farm Employment Change": { type: "inflation", impact: "red" },
+
+      "Producer Price Index (PPI)": { type: "price", impact: "red" },
+
+      "Core PPI m/m": { type: "price", impact: "orange" },
+
+ "PPI m/m": { type: "price", impact: "orange" },
+
+
+
+
+"Empire State Manufacturing Index" : { type: "negative", impact: "orange" },
+//estaba en inflation de 1
+     
+      "Core Retail Sales m/m": { type: "inflation", impact: "orange" },
+      "Retail Sales m/m": { type: "inflation", impact: "orange" },
+//estaban en inflation
+
+
+
+    
+      "Industrial Production": { type: "other", impact: "orange" },
+      "Capacity Utilization": { type: "other", impact: "orange" },
+      "Housing Starts": { type: "other", impact: "orange" },
+      "Building Permits": { type: "none", impact: "orange" },
+      //le quite el valor porque general,mente es carperta amarilla, building permits
+      "Construction Spending": { type: "other", impact: "orange" },
+      "Trade Balance": { type: "other", impact: "orange" },
+
+
+      "CB Consumer Confidence": { type: "inflation", impact: "red" },
+      "Employment Cost Index q/q": { type: "price", impact: "red" },
+
+
+      "Initial Jobless Claims": { type: "labor", impact: "orange" },
+      "Prelim GDP q/q": { type: "inflation", impact: "red" },
+                                 "Prelim GDP Price Index q/q": { type: "price", impact: "red" },
+      //"Advance GDP q/q": { type: "inflation", impact: "red" },
+
+"Crude Oil Inventories": { type: "none", impact: "orange" },
+//TENIA INFLATION DE 1
+
+
+//parece que jolts debe ser positivo siempre
+      "JOLTS Job Openings": { type: "inflation", impact: "red" },
+      //"Building Permits": { type: "none", impact: "red" },
+
+
+
+
+      "Final Services PMI": { type: "inflation de 1", impact: "orange" },
+      "ISM Services PMI" : { type: "inflation", impact: "red" },
+    };
+
+    const parseValue = (str) => {
+      if (!str) return NaN;
+      const s = str.replace(/,/g, '').toUpperCase();
+      if (s.endsWith('%')) return parseFloat(s);
+      if (s.endsWith('K')) return parseFloat(s) * 1e3;
+      if (s.endsWith('M')) return parseFloat(s) * 1e6;
+      return parseFloat(s);
+    };
+
+    const calcularCe = (nombre, tipo, impacto, actual, forecast, previo) => {
+      let baseCe = impacto === 'red' ? 2 : impacto === 'orange' ? 1 : impacto === 'medium' ? 1.5 : 0;
+      if (/core/i.test(nombre)) baseCe *= 2;
+
+      const base = (forecast + previo) / 2;
+
+      if (nombre === 'Federal Funds Rate' && actual == base) return 3;
+      if (nombre === 'Final GDP Price Index q/q' && actual >> base) return 3;
+      if (nombre === 'Final GDP Price Index q/q' && actual << base) return -3;
+
+
+      if (nombre === 'Advance GDP q/q' && actual >= base) return 3;
+      if (nombre === 'Advance GDP Price Index q/q' && actual >= base) return 3;
+
+
+
+      
+      if (nombre === 'JOLTS Job Openings' && actual >= base) return -3;
+      if (nombre === 'JOLTS Job Openings' && actual < base) return 3;
+
+
+
+      if (nombre === 'Existing Home Sales' && actual >= base) return 1;
+      if (nombre === 'Existing Home Sales' && actual < base) return 1;
+
+
+      
+  //if (nombre === 'Unemployment Claims' && actual < base) return -1;
+    //  if (nombre === 'Unemployment Claims' && actual >= base) return 1;
+
+
+      if (nombre === 'Existing Home Sales' && actual < base) return 1;
+
+      if (nombre === 'Average Hourly Earnings m/m' && actual >> base )return 2;
+      if (nombre === 'Pending Home Sales m/m' && actual << base )return 1;
+      
+
+      //if (nombre === 'Prelim GDP q/q') return 3;
+      if (nombre === 'Prelim GDP q/q' && actual == base) return -2;
+      if (nombre === 'Advance GDP q/q' && actual << base) return -3;
+
+      if (nombre === 'Core CPI m/m' &&  actual <= base) return -3;
+      if (nombre === 'Core CPI m/m' &&  actual >> base) return 3;
+      if (nombre === 'CPI m/m' &&  actual <= base) return -3;
+      if (nombre === 'CPI m/m' &&  actual >> base) return 3;
+      if (nombre === 'CPI y/y' &&  actual <= base) return -3;
+      if (nombre === 'CPI y/y' &&  actual >> base) return 3;
+
+
+      if (nombre === 'CB Consumer Confidence' &&  actual >= 100) return -3;
+      if (nombre === 'CB Consumer Confidence' &&  actual << 100) return 3;
+
+
+if (nombre === 'Crude Oil Inventories' &&  actual > base) return 1;
+if (nombre === 'Crude Oil Inventories' &&  actual < base) return 1;     
+
+
+      if (nombre === 'Final Services PMI' &&  actual >= 50) return 1;
+      if (nombre === 'Final Services PMI' &&  actual << 50) return -1;
+      if (nombre === 'ISM Services PMI' &&  actual >= 50) return 2;
+      if (nombre === 'ISM Services PMI' &&  actual << 50) return -2;
+      
+
+      if (nombre === 'Empire State Manufacturing Index' &&  actual < 0) return 1;
+
+      
+      if (nombre === 'Core Durable Goods Orders m/m' &&  actual >= 0.0) return 2;
+      if (nombre === 'Core Durable Goods Orders m/m' &&  actual << 0.0) return -2;
+       if (nombre === 'Durable Goods Orders m/m' &&  actual >> forecast) return 1;
+
+  if (nombre === 'Core PCE Price Index m/m' &&  actual == forecast) return 2;
+
+      if (nombre === 'Core Retail Sales m/m' &&  actual >= forecast) return 2;
+      if (nombre === 'Core Retail Sales m/m' &&  actual << forecast) return -2;
+      
+      if (nombre === 'Industrial Production m/m' &&  actual >= forecast) return -1;
+      if (nombre === 'Industrial Production m/m' &&  actual << forecast) return 1;
+
+       if (nombre === 'Employment Cost Index q/q' &&  actual <= base) return 2;
+      if (nombre === 'Employment Cost Index q/q' &&  actual > base) return 2;
+
+      if (nombre === 'ADP Non-Farm Employment Change' &&  actual >> base) return 3;
+      if (nombre === 'ADP Non-Farm Employment Change' &&  actual << base) return -3;
+      if (nombre === 'Non-Farm Employment Change' &&  actual >> base) return 3;
+      if (nombre === 'Non-Farm Employment Change' &&  actual << base) return -3;
+
+      //if (nombre === 'ISM Manufacturing Prices' &&  actual >= 50) return 1;
+      //if (nombre === 'ISM Manufacturing Prices' &&  actual << 50) return -1;
+     
+      //if (nombre === 'ISM Manufacturing PMI' &&  actual >= 50) return 2;
+      //if (nombre === 'ISM Manufacturing PMI' &&  actual << 50) return -2;
+
+
+      if (nombre === 'Revised UoM Consumer Sentiment' &&  actual > base) return 2;
+      if (nombre === 'Revised UoM Consumer Sentiment' &&  actual < base) return 2;
+
+
+
+      if (nombre === 'Retail Sales m/m' &&  actual >= 0) return 1;
+      if (nombre === 'Retail Sales m/m' &&  actual << 0) return -1;
+
+      //if (nombre === 'Non-Farm Employment Change' && actual > base) return 3;
+      //if (nombre === 'Non-Farm Employment Change' && actual < base) return 3;
+
+      // Caso especial: Prelim GDP q/q igual a forecast, previo y base → Ce = -1
+      if (nombre === 'Prelim GDP q/q' && actual === forecast && actual === previo && actual === base) return -1;
+
+      if (tipo === 'rate' && actual <= forecast && actual <= previo) return 3;
+
+
+
+      if (tipo === 'inflation' && actual >= base )return 2;
+      if (tipo === 'inflation de 1' && actual >> base )return 1;
+      if (tipo === 'inflation de 1' && actual << base )return 1;
+
+
+    
+     
+      
+
+      
+
+
+
+      return baseCe || 1;
+    };
+
+    const calcularSigma = (nombre, tipo, actual, forecast, previo) => {
+      const base = (forecast + previo) / 2;
+      const name = nombre.toLowerCase();
+
+   //   if (name.includes("core retail sales") || name.includes("retail sales")) return actual > base ? 1 : -1;
+
+     // if (name.includes("sentiment")) return actual > base ? 1 : -1;
+
+
+
+
+      if (name.includes("Prelim GDP q/q"))return actual = previo  ? 2 : -2; 
+      if (name.includes("Prelim GDP q/q"))return actual = forecast  ? 2 : -2;
+      if (name.includes("Prelim GDP q/q"))return actual = base  ? 2 : -2;
+
+
+
+      //if (name.includes("Unemployment claims")) return actual < base ? -1 : 1;
+
+      //if (name.includes("Core PPI") || name.includes("PPI") || name.includes("CPI")) {
+        //if (actual < base) return 1;
+        //if (actual > base) return -1;
+        //return 0;
+      //}
+
+      if (["CB Consumer Confidence"].includes(name)) {
+      
+        if (actual >= 100) return 3;
+        
+        if (actual < 100) return -3;
+
+        return 0;
+      }
+
+      if (["Prelim GDP q/q"].includes(name)) {
+        if (actual > base) return 2;
+        if (actual < base) return -2;
+        return 0;
+      }
+ 
+      
+      if (["Richmond Manufacturing Index"].includes(name)) {
+        if (actual > base) return 1;
+        if (actual < base) return -1;
+        return 0;
+      }
+
+
+      
+      
+      if (["Crude Oil Inventories"].includes(name)) {
+        if (actual > base) return +1;
+        if (actual < base) return -1;
+        return 0;
+      }
+
+      
+
+      if (["Prelim GDP Price Index q/q"].includes(name)) {
+        if (actual > base) return 2.5;
+        if (actual < base) return -2.5;
+        return 0;
+      }
+
+      if (["Core Durable Goods Orders m/m"].includes(name)) {
+        if (actual >= 0.0) return 2;
+         if (actual > forecast) return 2;
+        if (actual << 0.0) return -2;
+        return 0;
+      }
+
+
+
+   if (["Revised UoM Consumer Sentiment"].includes(name)) {
+        if (actual >= base) return 2;
+        if (actual << base) return 2;
+        return 0;
+      }
+
+
+      if (["ISM Manufacturing Prices"].includes(name)) {
+        if (actual >= 50) return 1;
+        if (actual << 50) return -1;
+        return 0;
+      }
+
+      if (["ISM Manufacturing PMI"].includes(name)) {
+        if (actual >= 50) return 2;
+        if (actual << 50) return -2;
+        return 0;
+      }
+
+
+
+
+
+
+      
+      if (["ISM Services PMI"].includes(name)) {
+        if (actual >= 50) return 1;
+        if (actual << 50) return -1;
+        return 0;
+      }
+
+      if (["Final Services PMI"].includes(name)) {
+        if (actual >= 50) return 1;
+        if (actual << 50) return -1;
+        return 0;
+      }
+
+
+
+if (["Core PPI m/m"].includes(name)) {
+         if (actual > base) return 2;
+         if (actual < base) return 2;
+         return 0;
+      }
+
+
+
+if (["PPI m/m"].includes(name)) {
+         if (actual > base) return 1;
+         if (actual < base) return 1;
+         return 0;
+      }
+
+
+
+      if (["Retail Sales m/m"].includes(name)) {
+         if (actual > 0.0) return -1;
+         if (actual < 0.0) return 1;
+         return 0;
+      }
+      //estos 2 estaban al revez
+      if (["Core Retail Sales m/m"].includes(name)) {
+        if (actual < forecast) return -2;
+        if (actual > forecast) return 2;
+        return 0;
+     }
+
+
+
+
+
+     
+
+      if (["Existing Home Sales"].includes(name)) {
+        if (actual > base) return 1;
+        if (actual < base) return 1;
+        return 0;
+      }
+
+      if (["ADP Non-Farm Employment Change"].includes(name)) {
+        if (actual >> base) return 3;
+        if (actual << base) return -3;
+        return 0;
+      }
+      
+      if (["Non-Farm Employment Change"].includes(name)) {
+        if (actual >> base) return 3;
+        if (actual << base) return -3;
+        return 0;
+      }
+
+
+       if (["Prelim UoM Consumer Sentiment"].includes(name)) {
+        if (actual > base) return 3;
+        if (actual < base) return -3;
+        return 0;
+      }
+      
+
+      if (["Employment Cost Index q/q"].includes(name)) {
+        if (actual >> base) return -2;
+        if (actual <= base) return 2;
+        return 0;
+      }
+
+
+      if (["New Home Sales"].includes(name)) {
+        if (actual > base) return 0;
+        if (actual < base) return 0;
+        return 0;
+      }
+
+    if (["Average Hourly Earnings m/m"].includes(name)) {
+        if (actual >> base) return 2;
+        if (actual << base) return -2;
+        return 0;
+      }
+
+
+
+    if (["Unemployment Claims"].includes(name)) {
+        if (actual >> base) return 1.5;
+        if (actual << base) return -1.5;
+        return 0;
+      }
+
+      
+    if (["Pending Home Sales m/m"].includes(name)) {
+        if (actual < base) return -1;
+        if (actual < base) return +1;
+        return 0;
+      }
+
+
+
+      if (tipo === 'inflation') return actual >= base ? 1 : -1;
+      if (tipo === '0') return actual > 0 ? 1 : -1;
+      if (tipo === 'inflation de 1') return actual >= base ? 1 : -1;
+      if (tipo === 'confidence') return actual > base ? 1 : -1;
+      if (tipo === 'price') return actual <= base ? 1 : -1;
+      if (tipo === 'wage') return actual > base ? 2 : -2;
+      if (tipo === 'rate') return 1;
+      if (tipo === 'none') return 0;
+
+      return actual > base ? -1 : actual < base ? 1 : 1;
+    
+    };
+document.getElementById('run').addEventListener('click', () => {
+  const lines = document.getElementById('inputText').value
+    .split(/\n+/)
+    .map(l => l.trim())
+    .filter(l => l && !/\d{1,2}:\d{2}(am|pm)/i.test(l));
+
+  const weekday = /^(Mon|Tue|Wed|Thu|Fri|Sat|Sun)$/;
+  const currencyRegex = /^[A-Z]{3}$/;
+
+  let currentDay = '';
+  const events = [];
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+
+    if (weekday.test(line) && lines[i + 1]) {
+      currentDay = line + ' ' + lines[i + 1];
+      i++;
+    } else if (currencyRegex.test(line)) {
+      const name = lines[i + 1];
+      const valuesLine = lines[i + 2];
+      const values = valuesLine ? valuesLine.split(/\s+/) : [];
+      if (name) events.push({ day: currentDay, name, values });
+    }
+  }
+
+  const grouped = {};
+  for (const ev of events) {
+    if (!grouped[ev.day]) grouped[ev.day] = [];
+    grouped[ev.day].push(ev);
+  }
+
+  const output = document.getElementById('output');
+  output.innerHTML = '';
+
+  for (const [day, evs] of Object.entries(grouped)) {
+    const sec = document.createElement('section');
+    sec.innerHTML = `<h2>${day}</h2>`;
+    const wrapper = document.createElement('div'); // Contenedor para tabla + indicador
+    wrapper.classList.add('tabla-indicador');
+
+    const table = document.createElement('table');
+    table.innerHTML = `<thead><tr><th>Evento</th><th>Actual</th><th>Forecast</th><th>Previo</th><th>Baseₑ</th><th>σₑ</th><th>Cₑ</th><th>Contribución</th></tr></thead><tbody></tbody>`;
+    const tbody = table.querySelector('tbody');
+
+    let sum = 0;
+
+    for (const ev of evs) {
+      const def = definitions[ev.name] || { type: 'other', impact: 'orange' };
+      const [act, forecast, prev] = ev.values;
+      const a = parseValue(act), f = parseValue(forecast), p = parseValue(prev);
+      if (isNaN(a) || isNaN(f) || isNaN(p)) continue;
+      const base = (f + p) / 2;
+      let Ce = calcularCe(ev.name, def.type, def.impact, a, f, p);
+      let sigma = calcularSigma(ev.name, def.type, a, f, p);
+
+      const contrib = sigma * Ce;
+      sum += contrib;
+
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${ev.name}</td>
+        <td>${act}</td>
+        <td>${forecast}</td>
+        <td>${prev}</td>
+        <td>${base.toFixed(2)}</td>
+        <td>${sigma}</td>
+        <td>${Ce}</td>
+        <td>${contrib}</td>
+      `;
+      tbody.appendChild(tr);
+    }
+
+    const tfoot = document.createElement('tfoot');
+    tfoot.innerHTML = `
+      <tr><th colspan="7">S Diario</th><th>${sum}</th></tr>
+    `;
+    table.appendChild(tfoot);
+
+    // Crear el indicador
+    const indicador = document.createElement('div');
+    indicador.classList.add('indicador-luz');
+    if (sum >= 0) {
+      indicador.classList.add('positivo');
+    } else {
+      indicador.classList.add('negativo');
+    } 
+
+    if (sum == 0) {
+      indicador.classList.add('neutro');
+    } 
+
+
+    wrapper.appendChild(table);
+    wrapper.appendChild(indicador);
+
+    sec.appendChild(wrapper);
+    output.appendChild(sec);
+  }
+
+  // Crear el indicador 0
+const indicador = document.createElement('div');
+indicador.classList.add('indicador-luz');
+
+if (sum > 0) {
+  indicador.classList.add('positivo');
+} else if (sum < 0) {
+  indicador.classList.add('negativo');
+} else {
+  indicador.classList.add('neutro');
+}
+
+});
+
+
+    
+  </script>
+
+ 
+
+
+</body>
+</html>
